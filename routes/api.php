@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('economic-groups', EconomicGroupController::class);
+//     Route::apiResource('flags', FlagController::class);
+//     Route::apiResource('units', UnitController::class);
+//     Route::apiResource('employees', EmployeeController::class);
+// });

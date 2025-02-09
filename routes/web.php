@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\EconomicGroupController;
+use \App\Http\Controllers\FlagController;
+use \App\Http\Controllers\UnitController;
+use \App\Http\Controllers\EmployeeController;
+use \App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +19,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/login', function () {
+    return view('welcome');
+});
+
+Route::get('/create', function () {
+    return view('create');
+});
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::middleware('auth')->group(function () {
+    Route::resource('groups', EconomicGroupController::class);
+    Route::resource('flags', FlagController::class);
+    Route::resource('units', UnitController::class);
+    Route::resource('employees', EmployeeController::class);
 });
