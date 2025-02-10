@@ -60,8 +60,8 @@ class EconomicGroupController extends Controller
     public function show(string $id)
     {
 
-        $group = EconomicGroup::findOrFail($id);
-        return view('painel.groups.edit', compact('group'));
+        $dados = EconomicGroup::findOrFail($id);
+        return view('painel.groups.edit', compact('dados'));
     }
 
 
@@ -70,8 +70,8 @@ class EconomicGroupController extends Controller
      */
     public function edit(string $id)
     {
-        $group = EconomicGroup::findOrFail($id);
-        return view('painel.groups.edit', compact('group'));
+        $dados = EconomicGroup::findOrFail($id);
+        return view('painel.groups.edit', compact('dados'));
     }
 
     /**
@@ -97,7 +97,7 @@ class EconomicGroupController extends Controller
      */
     public function destroy(int $id)
     {
-       
+
         try {
             $this->economicGroupServices->delete($id);
             return redirect()->route('groups.index')

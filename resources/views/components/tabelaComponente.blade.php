@@ -2,8 +2,8 @@
     <h1 class="display-5 mb-0">
         {{$name_table}}
     </h1>
-    <a href="{{route('groups.create')}}" class="btn btn-success">
-        <i class="bi bi-person-plus"></i> Novo {{$name_button}}
+    <a href="{{route($route .'.create')}}" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> {{$name_button}}
     </a>
 </div>
 
@@ -29,7 +29,7 @@
 
                     @endforeach
                     <td class="p-3">
-                        <a href="{{ route('groups.show', $dado->id) }}" class="btn btn-outline-secondary btn-sm me-1">
+                        <a href="{{ route($route.'.show', $dado->id) }}" class="btn btn-outline-secondary btn-sm me-1">
                             <i class="bi bi-pencil"></i>
                         </a>
                         <a href="#"
@@ -38,7 +38,7 @@
                             <i class="bi bi-trash"></i>
                         </a>
                         <form id="delete-form-{{ $dado->id }}"
-                            action="{{ route('groups.destroy', $dado->id) }}"
+                            action="{{ route($route.'.destroy', $dado->id) }}"
                             method="POST"
                             style="display: none;">
                             @csrf

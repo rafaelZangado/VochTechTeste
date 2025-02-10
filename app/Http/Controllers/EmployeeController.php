@@ -2,16 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\EmployeeRequest;
+use App\Models\Employee;
+use App\Models\Unit;
+use App\Services\EmployeeService;
 
 class EmployeeController extends Controller
 {
+    protected $employeesModel;
+    protected $unitModel;
+    protected $employeeService;
+
+    public function __construct(
+        Employee $employeesModel,
+        Unit $unitModel,
+        EmployeeService $employeeService,
+
+    )
+    {
+        $this->employeesModel = $employeesModel;
+        $this->unitModel = $unitModel;
+        $this->employeeService = $employeeService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('painel.employees.index');
+
+        return view('painel.employees.index', [
+            'dados' => $this->employeesModel::all(),
+            'colunas' => [
+                'nome',
+                'email',
+                'cpf',
+                'unit_id',
+                'created_at',
+                'updated_at'
+            ]
+        ]);
     }
 
     /**
@@ -19,15 +49,24 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $unit = $this->unitModel::all();
+        return view('painel.employees.create', compact('unit'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        //
+        try {
+            $dados = $request->validated();
+            $this->employeesModel->create($dados);
+            return redirect()->route('employees.create')
+                ->with('success', 'Unidade cadastrada com sucesso!');
+        }catch (\Exception $e) {
+            return redirect()->route('employees.create')
+                ->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -35,7 +74,16 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $dados = $this->employeesModel->with('unit')->findOrFail($id);
+        $units = $this->unitModel::all();
+      
+        return view(
+            'painel.employees.edit',
+            compact(
+                'dados',
+                'units'
+            )
+        );
     }
 
     /**
@@ -43,15 +91,32 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dados = $this->employeesModel->with('unit')->findOrFail($id);
+        $units = $this->unitModel::all();
+        return view(
+            'painel.employees.edit',
+            compact(
+                'dados',
+                'units'
+            )
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EmployeeRequest $request, string $id)
     {
-        //
+        try {
+            $dados = $request->validated();
+            $this->employeeService->update($dados, $id);
+            return to_route('employees.show', ['employee' => $id])
+                ->with('success', 'Unidade atualizada com sucesso!');
+
+        } catch (\Exception $e) {
+            return to_route('employees.edit', ['employee' => $id])
+                ->with('error', 'Erro ao atualizar a unidade: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -59,6 +124,13 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $this->employeeService->delete($id);
+            return redirect()->route('employees.index')
+                ->with('success', 'Unidade excluído com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')
+                ->with('error', 'Erro ao excluir: ' . $e->getMessage());
+        }
     }
 }

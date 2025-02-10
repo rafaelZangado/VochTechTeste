@@ -6,13 +6,13 @@
     <h1 class="display-5 mb-3">
         Grupos Econômicos / <b>Editar</b>
     </h1>
-    <a href="{{ route('groups.index', $dados->id) }}" class="btn btn-danger">
+    <a href="{{ route('groups.index', $group->id) }}" class="btn btn-danger">
         <i class="bi bi-arrow-return-left"></i> Voltar
     </a>
 </div>
 
 @include('components.formEditeComponente', [
-    'action' => route('groups.update', $dados->id),
+    'action' => route('groups.update', $group->id),
     'method' => 'POST',
     'campos' => [
         [
@@ -20,7 +20,7 @@
             'label' => 'Nome do Grupo',
             'type' => 'text',
             'placeholder' => 'Digite o nome do grupo',
-            'value' => old('name', $dados->name),
+            'value' => old('name', $group->name),
             'required' => true
         ],
     ],

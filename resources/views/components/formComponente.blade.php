@@ -32,15 +32,17 @@
                 {{ $campo['label'] }}
             </label>
 
-            <input
-                type="{{ $campo['type'] ?? 'text' }}"
-                name="{{ $campo['name'] }}"
-                id="{{ $campo['name'] }}"
-                class="form-control"
-                value="{{ $campo['value'] ?? '' }}"
-                placeholder="{{ $campo['placeholder'] ?? '' }}"
-                {{ $campo['required'] ?? false ? 'required' : '' }}
-            >
+            @if ($campo['type'] === 'select')
+                <select name="{{ $campo['name'] }}" id="{{ $campo['name'] }}" class="form-control">
+                    <option value="">Selecione</option>
+                    @foreach ($campo['options'] as $option)
+                        <option value="{{ $option['id'] }}">{{ $option['name'] }}</option>
+                    @endforeach
+                </select>
+            @else
+                <input type="{{ $campo['type'] }}" name="{{ $campo['name'] }}" class="form-control"
+                    placeholder="{{ $campo['placeholder'] }}" {{ $campo['required'] ? 'required' : '' }}>
+            @endif
         </div>
     @endforeach
 

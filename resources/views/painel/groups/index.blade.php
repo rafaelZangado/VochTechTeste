@@ -24,6 +24,7 @@
 @endif
 @include('components.tabelaComponente', [
     'id' => 'tabela-grupos',
+    'route' => 'groups',
     'name_button' => 'grupo',
     'name_table' => 'Lista dos Grupos',
     'colunasTb' => ['id','Nome dos Grupos','Data'],

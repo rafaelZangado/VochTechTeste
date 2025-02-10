@@ -25,24 +25,35 @@
         <form action="{{ $action }}" method="POST" class="mb-3">
             @csrf
             @method('PUT')
+
             @foreach ($campos as $campo)
                 <div class="mb-3">
                     <label for="{{ $campo['name'] }}" class="form-label">
                         {{ $campo['label'] }}
                     </label>
 
-                    <input
-                        type="{{ $campo['type'] ?? 'text' }}"
-                        name="{{ $campo['name'] }}"
-                        id="{{ $campo['name'] }}"
-                        class="form-control"
-                        value="{{ $campo['value'] ?? '' }}"
-                        placeholder="{{ $campo['placeholder'] ?? '' }}"
-                        {{ $campo['required'] ?? false ? 'required' : '' }}
-                    >
+                    @if ($campo['type'] === 'select')
+                    <select name="{{ $campo['name'] }}" id="{{ $campo['name'] }}" class="form-control" {{ $campo['required'] ?? false ? 'required' : '' }}>
+                        <option value="">Selecione...</option>
+                        @foreach ($campo['options'] as $option)
+                            <option value="{{ $option['id'] }}" {{ (old($campo['name'], $dados->{$campo['name']})) == $option['id'] ? 'selected' : '' }}>
+                                {{ $option['name'] }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @else
+
+
+                        <input type="{{ $campo['type'] ?? 'text' }}" name="{{ $campo['name'] }}" id="{{ $campo['name'] }}"
+                            class="form-control" value="{{ $campo['value'] ?? '' }}"
+                            placeholder="{{ $campo['placeholder'] ?? '' }}" {{ $campo['required'] ?? false ? 'required' : '' }}>
+                    @endif
                 </div>
             @endforeach
+
             <button type="submit" class="btn btn-primary">{{ $botao ?? 'Salvar' }}</button>
         </form>
+
     </div>
 </div>

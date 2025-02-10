@@ -10,9 +10,10 @@ class Unit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'trade_name',
+        'corporate_name',
+        'cnpj',
         'flag_id',
-        'address'
     ];
 
     public function flag()
