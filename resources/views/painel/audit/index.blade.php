@@ -22,13 +22,20 @@
         });
     </script>
 @endif
-@include('components.tabelaComponente', [
+@include('components.tabela', [
     'id' => 'tabela-grupos',
     'name_button' => 'grupo',
-    'name_table' => 'Lista dos Grupos',
-    'colunasTb' => ['id','Nome dos Grupos','Data'],
+    'name_table' => 'Histórico de Alterações',
+    'colunasTb' => [
+        'id',
+        'Usuário que alterou',
+        'De',
+        'Para',
+        'Data da Alteração',
+    ],
     'colunas' => $colunas,
     'dados' => $dados
-])
+]);
+
 
 @endsection

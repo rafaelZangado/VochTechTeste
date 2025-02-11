@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\EconomicGroupController;
 use \App\Http\Controllers\FlagController;
@@ -35,4 +36,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('flags', FlagController::class);
     Route::resource('units', UnitController::class);
     Route::resource('employees', EmployeeController::class);
+    Route::resource('audits', AuditController::class);
 });

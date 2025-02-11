@@ -42,8 +42,8 @@
                         ['icon' => 'bi-flag', 'label' => 'Bandeiras', 'desc' => 'Administre suas bandeiras', 'route' => 'flags.index'],
                         ['icon' => 'bi-shop', 'label' => 'Unidades', 'desc' => 'Veja e edite suas unidades', 'route' => 'units.index'],
                         ['icon' => 'bi-people', 'label' => 'Colaboradores', 'desc' => 'Gerencie sua equipe', 'route' => 'employees.index'],
-                       // ['icon' => 'bi-shield-lock', 'label' => 'Auditoria', 'desc' => 'Monitore atividades', 'route' => 'auditoria.index'],
-                        //['icon' => 'bi-file-bar-graph', 'label' => 'Relatórios', 'desc' => 'Acesse relatórios detalhados', 'route' => 'relatorios.index'],
+                        ['icon' => 'bi-shield-lock', 'label' => 'Auditoria', 'desc' => 'Monitore atividades', 'route' => 'audits.index'],
+                        ['icon' => 'bi-file-bar-graph', 'label' => 'Relatórios', 'desc' => 'Acesse relatórios detalhados', 'route' => 'relatorios.index'],
                     ];
                 @endphp
 

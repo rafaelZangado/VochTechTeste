@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\AuditService;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Group\EconomicGroupRepositoryInterface;
 use App\Repositories\Group\EconomicGroupRepository;
@@ -58,6 +59,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UnitService::class, function ($app) {
             return new UnitService($app->make(UnitRepositoryInterface::class));
         });
+
+        //Audit
+        $this->app->bind( AuditService::class);
 
 
     }
