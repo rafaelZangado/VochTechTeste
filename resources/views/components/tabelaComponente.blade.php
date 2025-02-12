@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="display-5 mb-0">
         {{$name_table}}
@@ -10,7 +14,7 @@
 
 
 <div class="card shadow-lg p-4 border-0 rounded-3">
-    <table id="{{ $id ?? 'tabela' }} tabela" class="table table-hover">
+    <table id="{{ $id ?? 'tabela' }}" class="table table-hover tb">
         <thead class="table-dark">
             <tr>
                 @foreach ($colunasTb as $coluna)
@@ -22,40 +26,46 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($dados as $dado)
-                <tr>
-                    @foreach ($colunas as $coluna)
-                        <td class="p-3">{{ $dado->$coluna }}</td>
+        @forelse ($dados as $dado)
+    <tr>
+        @foreach ($colunas as $coluna)
+            <td class="p-3">
+                @if ($coluna === 'unit_name')
+                    {{ $dado->unit->trade_name ?? 'Sem unidade' }}
+                @elseif ($coluna === 'cpf')
+                    {{ \App\Helpers\FormatHelper::formatCpfCnpj($dado->$coluna) }}
+                @elseif ($coluna === 'created_at' || $coluna === 'updated_at')
+                    {{ \App\Helpers\FormatHelper::formatDate($dado->$coluna) }}
+                @else
+                    {{ $dado->$coluna }}
+                @endif
+            </td>
+        @endforeach
+        <td class="p-3">
+            <a href="{{ route($route.'.show', $dado->id) }}" class="btn btn-outline-secondary btn-sm me-1">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <a href="#" class="btn btn-outline-secondary btn-sm" onclick="confirmDelete({{ $dado->id }})">
+                <i class="bi bi-trash"></i>
+            </a>
+            <form id="delete-form-{{ $dado->id }}" action="{{ route($route.'.destroy', $dado->id) }}" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
+        </td>
+    </tr>
+@empty
+    <tr>
+        <td colspan="{{ count($colunas) + 1 }}" class="text-center">Nenhum dado encontrado</td>
+    </tr>
+@endforelse
 
-                    @endforeach
-                    <td class="p-3">
-                        <a href="{{ route($route.'.show', $dado->id) }}" class="btn btn-outline-secondary btn-sm me-1">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="#"
-                        class="btn  btn-outline-secondary btn-sm"
-                        onclick="confirmDelete({{ $dado->id }})">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                        <form id="delete-form-{{ $dado->id }}"
-                            action="{{ route($route.'.destroy', $dado->id) }}"
-                            method="POST"
-                            style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="{{ count($colunas) + 1 }}" class="text-center">Nenhum dado encontrado</td>
-                </tr>
-            @endforelse
-        </tbody>
+
+</tbody>
+
     </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function confirmDelete(id) {
@@ -77,12 +87,12 @@
 
     $(document).ready(function () {
         // Destruir DataTable existente se houver
-        if ($.fn.DataTable.isDataTable('#tabela')) {
-            $('#tabela').DataTable().destroy();
+        if ($.fn.DataTable.isDataTable('.tb')) {
+            $('.tb').DataTable().destroy();
         }
 
         // Inicialização única do DataTable com todas as configurações
-        var table = $('#tabela').DataTable({
+        var table = $('.tb').DataTable({
             dom: '<"top"<"d-flex justify-content-between"<"d-flex gap-2"B>f>>rt<"bottom"lip>',
             buttons: [
                 {

@@ -11,9 +11,11 @@ class FlagRequest extends FormRequest
      */
     public function rules(): array
     {
+        $flagsId = $this->route('flags');
+
         return [
-            'name' => 'required|string|max:255|unique:flags,name',
-            'economic_group_id' => 'required|exists:economic_groups,id'
+            'name' => "required|string|max:255|unique:flags,name,{$flagsId}",
+            'economic_group_id' => 'required|exists:economic_groups,id',
         ];
     }
 

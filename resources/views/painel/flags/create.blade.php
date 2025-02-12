@@ -1,10 +1,10 @@
 @extends('components.blanck')
-@section('title', 'Criar novo Grupo Economico')
+@section('title', 'Criar nova bandeira')
 @section('tela')
 
 <div class="d-flex justify-content-between align-items-center mb-3">
 <h1 class="display-5 mb-3">
-    Grupos Economicos/ <b>Cadastrar Grupo</b>
+    Bandeiras/ <b>Cadastrar Bandeiras</b>
 </h1>
     <a href="{{route('flags.index')}}" class="btn btn-success">
     <i class="bi bi-arrow-return-left"></i> Voltar

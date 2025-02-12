@@ -7,25 +7,25 @@ use App\Repositories\Employee\EmployeeRepositoryInterface;
 
 class EmployeeService
 {
-    protected $groupRepository;
+    protected $employeeRepository;
 
-    public function __construct(EmployeeRepositoryInterface $groupRepository)
+    public function __construct(EmployeeRepositoryInterface $employeeRepository)
     {
-        $this->groupRepository = $groupRepository;
+        $this->employeeRepository = $employeeRepository;
     }
 
     public function create(array $dados)
     {
-        return $this->groupRepository->create($dados);
+        return $this->employeeRepository->create($dados);
     }
 
     public function update(array $dados, int $id)
     {
-        return  $this->groupRepository->update($dados,  $id);
+        return  $this->employeeRepository->update($dados,  $id);
     }
 
     public function delete(int $id)
     {
-        return $this->groupRepository->delete( $id);
+        return $this->employeeRepository->delete( $id);
     }
 }

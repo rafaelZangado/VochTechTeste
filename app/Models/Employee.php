@@ -20,4 +20,9 @@ class Employee extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function getCpfFormattedAttribute()
+    {
+        return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $this->cpf);
+    }
 }

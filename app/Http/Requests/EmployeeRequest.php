@@ -18,7 +18,7 @@ class EmployeeRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => "required|email|max:255|unique:employees,email,{$employeeId},id",
-            'cpf' => "required|string|size:14|unique:employees,cpf,{$employeeId},id",
+            'cpf' => "required|string|size:11|unique:employees,cpf,{$employeeId},id",
             'position' => 'nullable|string|max:100',
             'unit_id' => 'required|exists:economic_groups,id'
 
@@ -33,7 +33,7 @@ class EmployeeRequest extends FormRequest
             'email.email' => 'Informe um e-mail válido.',
             'email.unique' => 'Este e-mail já está cadastrado.',
             'cpf.required' => 'O CPF é obrigatório.',
-            'cpf.size' => 'O CPF deve ter exatamente 14 caracteres.',
+            'cpf.size' => 'O CPF deve ter exatamente 11 caracteres.',
             'cpf.unique' => 'Este CPF já está cadastrado.',
         ];
     }

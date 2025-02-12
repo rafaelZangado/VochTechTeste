@@ -33,15 +33,14 @@
                     </label>
 
                     @if ($campo['type'] === 'select')
-                    <select name="{{ $campo['name'] }}" id="{{ $campo['name'] }}" class="form-control" {{ $campo['required'] ?? false ? 'required' : '' }}>
-                        <option value="">Selecione...</option>
-                        @foreach ($campo['options'] as $option)
-                            <option value="{{ $option['id'] }}" {{ (old($campo['name'], $dados->{$campo['name']})) == $option['id'] ? 'selected' : '' }}>
-                                {{ $option['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-
+                        <select name="{{ $campo['name'] }}" id="{{ $campo['name'] }}" class="form-control" {{ $campo['required'] ?? false ? 'required' : '' }}>
+                            <option value="">Selecione...</option>
+                            @foreach ($campo['options'] as $option)
+                                <option value="{{ $option['id'] }}" {{ (old($campo['name'], $dados->{$campo['name']})) == $option['id'] ? 'selected' : '' }}>
+                                    {{ $option['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
                     @else
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\EconomicGroupController;
 use \App\Http\Controllers\FlagController;
@@ -20,16 +21,16 @@ use \App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 Route::get('/login', function () {
     return view('welcome');
 });
 
-Route::get('/create', function () {
-    return view('create');
-});
 
-Route::post('/register', [AuthController::class, 'register']);
+
+
+Route::get('/create', [AuthController::class, 'create'])->name('create');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth')->group(function () {
     Route::resource('groups', EconomicGroupController::class);
@@ -37,4 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('units', UnitController::class);
     Route::resource('employees', EmployeeController::class);
     Route::resource('audits', AuditController::class);
+
+    Route::post('/ResetPassword', [AuthController::class, 'update'])->name('ResetPassword');
+    Route::post('/logout', [AuthController::class, 'close'])->name('logout');
+    Route::get('/dashboard/report', [DashboardController::class, 'report'])->name('dashboard.report');
+
 });

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Services\AuditService;
+use App\Services\AuthService;
+use App\Services\DashboardService;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Group\EconomicGroupRepositoryInterface;
 use App\Repositories\Group\EconomicGroupRepository;
@@ -62,6 +64,12 @@ class AppServiceProvider extends ServiceProvider
 
         //Audit
         $this->app->bind( AuditService::class);
+
+        //Dashboard
+        $this->app->bind( DashboardService::class);
+
+         //Dashboard
+         $this->app->bind( AuthService::class);
 
 
     }

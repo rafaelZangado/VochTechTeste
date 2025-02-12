@@ -23,7 +23,7 @@
     }
 
     .custom-table th {
-        background-color:rgb(28, 107, 185);
+        background-color: rgb(28, 107, 185);
         color: white;
     }
 
@@ -86,73 +86,85 @@
 </style>
 
 <body>
-<br>
-    <ul class="nav justify-content-center text-secondary">
-
-
-
-        <li class="nav-item">
-        <form action="{{ route('login') }}" method="post">
-            @csrf
-            <input type="email" name="email" class="form-text" placeholder="E-mail">
-            <div id="emailHelp">Quero criar uma conta.</div>
-
-            <input type="password" name="password" class="form-text" placeholder="Senha">
-            <div id="emailHelp">Esqueci minha senha.</div>
-
-            <input type="submit" value="Entrar">
-        </form>
-
-        </li>
-        <li class="nav-item">
-            <a class="nav-link disabled text-success" aria-disabled="true">
-                <i class="bi bi-door-open-fill"></i> Criar conta
-            </a>
-        </li>
-    </ul>
-<br>
-
-<div id="carouselExample" class="carousel slide">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{{ asset('img/banner/banner1.png') }}" class="d-block w-100" alt="...">
-
-
-    </div>
-    <div class="carousel-item">
-    <img src="{{ asset('img/banner/banner2.png') }}" class="d-block w-100" alt="...">
+    <br>
+    @if ($errors->any())
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        @foreach ($errors->all() as $error)
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>Atenção:</strong> {{ $error }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        @endforeach
     </div>
 
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toast").forEach(toastEl => new bootstrap.Toast(toastEl).show());
+        });
+    </script>
+@endif
+<div class="container">
+
+    <form action="{{ route('login') }}" method="post" >
+        @csrf
+        <div class="row mb-4 align-items-center justify-content-end">
+            <div class="col-md-3">
+                <label class="fw-bold">Login:</label>
+                <input type="text" name="email" class="form-control border border-success" placeholder="Digite seu e-mail">
+                <div id="emailHelp" class="text-end text-muted small">
+                    <a href="{{ route('create') }}">Quero criar uma conta.</a>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="fw-bold">Senha:</label>
+                <input type="password" name="password" class="form-control border border-success" placeholder="Digite sua senha">
+                <div id="passwordHelp" class="text-end text-muted small">
+                    <a href="#">Esqueci minha senha.</a>
+                </div>
+            </div>
+
+            <div class="col-md-2 text-center">
+                <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 
-    <!-- jQuery primeiro -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-    <!-- DataTables core -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-    <!-- Extensões -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ asset('img/banner/banner1.png') }}" class="d-block w-100" alt="...">
+
+
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('img/banner/banner2.png') }}" class="d-block w-100" alt="...">
+            </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-
-</body>
 
 </html>

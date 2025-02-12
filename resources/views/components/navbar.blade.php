@@ -11,20 +11,25 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-secondary" href="#">
-            <i class="bi bi-key"></i> Redefinir Senha
-        </a>
-    </li>
+    <a class="nav-link text-secondary" href="#" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+        <i class="bi bi-key"></i> Redefinir Senha
+    </a>
+</li>
+
     <li class="nav-item">
         <a class="nav-link text-secondary" href="#">
             <i class="bi bi-question-circle"></i> Dúvidas Frequentes
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled text-success" aria-disabled="true">
+    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="nav-link text-danger bg-transparent border-0">
             <i class="bi bi-door-open-fill"></i> Sair
-        </a>
-    </li>
+        </button>
+    </form>
+</li>
+
 </ul>
 <br>
 <nav class="navbar navbar-expand-lg bg-success shadow">
@@ -43,7 +48,7 @@
                         ['icon' => 'bi-shop', 'label' => 'Unidades', 'desc' => 'Veja e edite suas unidades', 'route' => 'units.index'],
                         ['icon' => 'bi-people', 'label' => 'Colaboradores', 'desc' => 'Gerencie sua equipe', 'route' => 'employees.index'],
                         ['icon' => 'bi-shield-lock', 'label' => 'Auditoria', 'desc' => 'Monitore atividades', 'route' => 'audits.index'],
-                        ['icon' => 'bi-file-bar-graph', 'label' => 'Relatórios', 'desc' => 'Acesse relatórios detalhados', 'route' => 'relatorios.index'],
+                        ['icon' => 'bi-file-bar-graph', 'label' => 'Relatórios', 'desc' => 'Acesse relatórios detalhados', 'route' => 'dashboard.report'],
                     ];
                 @endphp
 
@@ -63,9 +68,40 @@
         </div>
     </div>
 </nav>
+<!-- Modal para Redefinição de Senha -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resetPasswordModalLabel">Redefinir Senha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm" action="{{ route('ResetPassword') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email" disabled placeholder="Digite seu e-mail">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Nova Senha</label>
+                        <input type="password" class="form-control" id="newPassword" disabled name="password" required placeholder="Digite sua nova senha">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                        <input type="password" class="form-control" id="confirmPassword" disabled name="password_confirmation" required placeholder="Confirme sua nova senha">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" disabled>Redefinir Senha</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
-    /* Ajustes do menu */
+
     .menu-item {
         padding: 10px;
         transition: all 0.3s ease-in-out;
@@ -77,7 +113,7 @@
         transform: scale(1.1);
     }
 
-    /* Tooltip escondido */
+
     .menu-tooltip {
         top: 120%;
         left: 50%;
@@ -89,7 +125,7 @@
         transition: opacity 0.3s ease-in-out;
     }
 
-    /* Exibir tooltip no hover */
+
     .nav-item:hover .menu-tooltip {
         display: block;
         opacity: 1;

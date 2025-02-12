@@ -44,11 +44,11 @@ class EconomicGroupController extends Controller
         try {
             $dados = $request->validated();
             $this->economicGroupServices->create($dados);
-            return redirect()->route('groups.create')
+            return to_route('groups.create')
                 ->with('success', 'Grupo econômico cadastrado com sucesso!');
 
         } catch (\Exception $e) {
-            return redirect()->route('groups.create')
+            return to_route('groups.create')
                 ->with('error', 'Erro ao cadastrar o grupo econômico: ' . $e->getMessage());
         }
 
@@ -100,10 +100,10 @@ class EconomicGroupController extends Controller
 
         try {
             $this->economicGroupServices->delete($id);
-            return redirect()->route('groups.index')
+            return to_route('groups.index')
                 ->with('success', 'Grupo excluído com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->route('groups.index')
+            return to_route('groups.index')
                 ->with('error', 'Erro ao excluir o grupo econômico: ' . $e->getMessage());
         }
     }

@@ -49,15 +49,14 @@ class FlagController extends Controller
      */
     public function store(FlagRequest $request)
     {
-
         try {
             $dados = $request->validated();
             $this->flagsService->create($dados);
-            return redirect()->route('flags.create')
+            return to_route('flags.create')
                 ->with('success', 'Bandeira cadastrada com sucesso!');
 
         } catch (\Exception $e) {
-            return redirect()->route('flags.create')
+            return to_route('flags.create')
                 ->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
         }
     }
@@ -107,10 +106,10 @@ class FlagController extends Controller
     {
         try {
             $this->flagsService->delete($id);
-            return redirect()->route('flags.index')
+            return to_route('flags.index')
                 ->with('success', 'Bandeira excluído com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->route('flags.index')
+            return to_route('flags.index')
                 ->with('error', 'Erro ao excluir: ' . $e->getMessage());
         }
     }

@@ -1,5 +1,5 @@
 @extends('components.blanck')
-@section('title', 'Colaboradores')
+@section('title', 'Relatorios')
 @section('tela')
 @if(session('success'))
     <script>
@@ -24,15 +24,17 @@
 @endif
 @include('components.tabelaComponente', [
     'id' => 'tabela-grupos',
-    'route' => 'employees',
-    'name_button' => 'Cadastrar Colaborador',
-    'name_table' => 'Lista dos Colaboradores',
+    'route' => 'units',
+    'name_button' => 'Cadastrar Unidade',
+    'name_table' => 'Lista de Unidades',
     'colunasTb' => [
-        'Nome Completo',
-        'Email',
-        'C.P.F',
-        'Unidade',
-        'Data'
+        'id',
+        'Nome Fantasia',
+        'Razão Social',
+        'CNPJ',
+        'Bandeira',
+        'Data de Criação',
+        'Ultima Atualização'
     ],
     'colunas' => $colunas,
     'dados' => $dados

@@ -40,5 +40,57 @@
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+    $(document).ready(function () {
+        if ($.fn.DataTable.isDataTable('.tb')) {
+            $('.tb').DataTable().destroy();
+        }
+
+        var table = $('.tb').DataTable({
+            dom: '<"top"<"d-flex justify-content-between"<"d-flex gap-2"B>f>>rt<"bottom"lip>',
+            buttons: [
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="bi bi-file-pdf"></i> PDF',
+                    className: 'btn btn-secondary',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="bi bi-file-excel"></i> Excel',
+                    className: 'btn btn-success',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    }
+                }
+            ],
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            language: {
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                zeroRecords: "Nada encontrado",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "Nenhum registro disponível",
+                infoFiltered: "(filtrado de _MAX_ registros no total)",
+                search: "",
+                paginate: {
+                    first: "Primeiro",
+                    last: "Último",
+                    next: "Próximo",
+                    previous: "Anterior"
+                }
+            },
+            initComplete: function (settings, json) {
+                $('.dataTables_filter input').attr('placeholder', '');
+            }
+        });
+    });
+</script>
+
+</body>
 </body>
 </html>

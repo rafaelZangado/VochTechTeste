@@ -60,10 +60,10 @@ class UnitController extends Controller
         try {
             $dados = $request->validated();
             $this->unitModel->create($dados);
-            return redirect()->route('units.create')
+            return to_route('units.create')
                 ->with('success', 'Unidade cadastrada com sucesso!');
         }catch (\Exception $e) {
-            return redirect()->route('units.create')
+            return to_route('units.create')
                 ->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
         }
     }
@@ -75,7 +75,7 @@ class UnitController extends Controller
     {
         $dados = $this->unitModel->with('flag')->findOrFail($id);
         $flags = $this->flagModel::all();
-    
+
         return view(
             'painel.units.edit',
             compact(
@@ -127,10 +127,10 @@ class UnitController extends Controller
     {
         try {
             $this->unitService->delete($id);
-            return redirect()->route('units.index')
+            return to_route('units.index')
                 ->with('success', 'Unidade excluído com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->route('units.index')
+            return to_route('units.index')
                 ->with('error', 'Erro ao excluir: ' . $e->getMessage());
         }
     }

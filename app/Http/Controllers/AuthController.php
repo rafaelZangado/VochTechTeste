@@ -2,38 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    protected $authService;
+
+    public function __construct(AuthService $authService)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $this->authService = $authService;
+    }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    public function create()
+    {
+        return view('create');
+    }
 
-        return response()->json([
-            'token' => $user->createToken('API Token')->plainTextToken
-        ]);
+    public function register(AuthRequest $request)
+    {
+        try {
+            $this->authService->register($request->validated());
+            return to_route('groups.index');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withInput()->withErrors($e->errors());
+        }
     }
 
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        return Auth::attempt($credentials)
-        ? to_route('groups.index')
-        : to_route('groups.index');
+
+        if (Auth::attempt($credentials)) {
+            return to_route('groups.index');
+        } else {
+            return back()->withErrors(['email' => 'Credenciais inválidas. Tente novamente.']);
+        }
+    }
+
+
+    public function close(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
+    }
+
+    public function update(AuthRequest $request)
+    {
+
+        try {
+            $this->authService->update($request->validated());
+            return back()->with('success', 'Senha redefinida com sucesso!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erro ao redefinir a senha. Tente novamente.']);
+        }
     }
 
 }

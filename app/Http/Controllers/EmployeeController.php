@@ -32,14 +32,13 @@ class EmployeeController extends Controller
     {
 
         return view('painel.employees.index', [
-            'dados' => $this->employeesModel::all(),
+            'dados' => $this->employeesModel::with('unit')->get(),
             'colunas' => [
-                'nome',
+                'name',
                 'email',
                 'cpf',
-                'unit_id',
+                'unit_name',
                 'created_at',
-                'updated_at'
             ]
         ]);
     }
@@ -58,13 +57,15 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+       
         try {
             $dados = $request->validated();
+
             $this->employeesModel->create($dados);
-            return redirect()->route('employees.create')
+            return to_route('employees.create')
                 ->with('success', 'Unidade cadastrada com sucesso!');
         }catch (\Exception $e) {
-            return redirect()->route('employees.create')
+            return to_route('employees.create')
                 ->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
         }
     }
@@ -76,7 +77,7 @@ class EmployeeController extends Controller
     {
         $dados = $this->employeesModel->with('unit')->findOrFail($id);
         $units = $this->unitModel::all();
-      
+
         return view(
             'painel.employees.edit',
             compact(
@@ -126,10 +127,10 @@ class EmployeeController extends Controller
     {
         try {
             $this->employeeService->delete($id);
-            return redirect()->route('employees.index')
+            return to_route('employees.index')
                 ->with('success', 'Unidade excluído com sucesso!');
         } catch (\Exception $e) {
-            return redirect()->route('employees.index')
+            return to_route('employees.index')
                 ->with('error', 'Erro ao excluir: ' . $e->getMessage());
         }
     }
