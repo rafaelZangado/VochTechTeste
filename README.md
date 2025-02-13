@@ -50,6 +50,8 @@ php artisan migrate
 ```
 
 obs: caso queria gerar alguns dados fakes voce pode rodar o comando 
+<b>Login:</b> admin@admin.com
+<b>Senha:</b> admin123
 ```bash
 php artisan migrate db:seed
 ```
