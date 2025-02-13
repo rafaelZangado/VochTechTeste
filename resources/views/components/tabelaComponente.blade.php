@@ -86,12 +86,10 @@
     }
 
     $(document).ready(function () {
-        // Destruir DataTable existente se houver
         if ($.fn.DataTable.isDataTable('.tb')) {
             $('.tb').DataTable().destroy();
         }
 
-        // Inicialização única do DataTable com todas as configurações
         var table = $('.tb').DataTable({
             dom: '<"top"<"d-flex justify-content-between"<"d-flex gap-2"B>f>>rt<"bottom"lip>',
             buttons: [

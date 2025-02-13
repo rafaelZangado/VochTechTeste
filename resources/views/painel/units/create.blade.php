@@ -48,6 +48,6 @@
 
 
         ],
-        'botao' => 'Criar Grupo'
+        'botao' => 'Cadastrar Unidade'
     ])
 @endsection

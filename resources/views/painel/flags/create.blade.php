@@ -23,7 +23,7 @@
                 'required' => true
             ],
             [
-                'name' => 'name',
+                'name' => 'economic_group_id',
                 'label' => 'Nome do Grupo',
                 'type' => 'select',
                 'options' => $economicGroups->map(fn($group) => [
@@ -32,7 +32,7 @@
                 'required' => true
             ],
         ],
-        'botao' => 'Criar Grupo'
+        'botao' => 'Cadastrar Bandeira'
     ])
 @endsection
 @push('scripts')
