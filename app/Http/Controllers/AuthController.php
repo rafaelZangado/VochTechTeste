@@ -28,7 +28,7 @@ class AuthController extends Controller
     {
         try {
             $this->authService->register($request->validated());
-            return to_route('groups.index');
+            return to_route('dashboard.report');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->withInput()->withErrors($e->errors());
         }
@@ -39,7 +39,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return to_route('groups.index');
+            return to_route('dashboard.report');
         } else {
             return back()->withErrors(['email' => 'Credenciais inválidas. Tente novamente.']);
         }

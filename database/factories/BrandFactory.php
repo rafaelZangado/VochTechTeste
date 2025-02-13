@@ -20,8 +20,6 @@ class BrandFactory extends Factory
         return [
             'name' => fake()->company(),
             'economic_group_id' => EconomicGroup::factory(),
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }

@@ -21,8 +21,6 @@ class EmployeeFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'cpf' => fake()->numerify('###.###.###-##'),
-            'position' => fake()->jobTitle(),
-            'password' => Hash::make('password'),
             'unit_id' => Unit::factory(),
         ];
     }
