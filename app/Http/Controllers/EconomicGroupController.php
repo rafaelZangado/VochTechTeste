@@ -5,104 +5,125 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EconomicGroupRequest;
 use App\Models\EconomicGroup;
 use App\Services\EconomicGroupService;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Exception;
 
 class EconomicGroupController extends Controller
 {
-    protected $economicGroupServices;
+    private EconomicGroupService $economicGroupService;
 
-    public function __construct(EconomicGroupService $economicGroupServices)
+    public function __construct(EconomicGroupService $economicGroupService)
     {
-        $this->economicGroupServices = $economicGroupServices;
+        $this->economicGroupService = $economicGroupService;
     }
+
     /**
      * Display a listing of the resource.
+     *
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $grupos = EconomicGroup::all();
+        $economicGroups = EconomicGroup::all();
 
         return view('painel.groups.index', [
-            'dados' => $grupos,
+            'dados' => $economicGroups,
             'colunas' => ['id', 'name', 'created_at']
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('painel.groups.create');
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param EconomicGroupRequest $request
+     * @return RedirectResponse
      */
-    public function store(EconomicGroupRequest $request)
+    public function store(EconomicGroupRequest $request): RedirectResponse
     {
         try {
-            $dados = $request->validated();
-            $this->economicGroupServices->create($dados);
+            $validatedData = $request->validated();
+            $this->economicGroupService->create($validatedData);
+
             return to_route('groups.create')
                 ->with('success', 'Grupo econômico cadastrado com sucesso!');
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return to_route('groups.create')
                 ->with('error', 'Erro ao cadastrar o grupo econômico: ' . $e->getMessage());
         }
-
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param string $id
+     * @return View
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
+        $economicGroup = EconomicGroup::findOrFail($id);
 
-        $dados = EconomicGroup::findOrFail($id);
-        return view('painel.groups.edit', compact('dados'));
+        return view('painel.groups.edit', compact('economicGroup'));
     }
-
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param string $id
+     * @return View
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
-        $dados = EconomicGroup::findOrFail($id);
-        return view('painel.groups.edit', compact('dados'));
+        $economicGroup = EconomicGroup::findOrFail($id);
+
+        return view('painel.groups.edit', compact('economicGroup'));
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param EconomicGroupRequest $request
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(EconomicGroupRequest $request, int $id)
+    public function update(EconomicGroupRequest $request, int $id): RedirectResponse
     {
         try {
-            $dados = $request->validated();
-            $this->economicGroupServices->update($dados, $id);
+            $validatedData = $request->validated();
+            $this->economicGroupService->update($validatedData, $id);
+
             return to_route('groups.show', ['group' => $id])
                 ->with('success', 'Grupo atualizado com sucesso!');
-
-        } catch (\Exception $e) {
-            return to_route('groups.show' , ['group' => $id])
-                ->with('error', 'Erro ao cadastrar o grupo econômico: ' . $e->getMessage());
+        } catch (Exception $e) {
+            return to_route('groups.show', ['group' => $id])
+                ->with('error', 'Erro ao atualizar o grupo econômico: ' . $e->getMessage());
         }
-
     }
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
-
         try {
-            $this->economicGroupServices->delete($id);
+            $this->economicGroupService->delete($id);
+
             return to_route('groups.index')
                 ->with('success', 'Grupo excluído com sucesso!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return to_route('groups.index')
                 ->with('error', 'Erro ao excluir o grupo econômico: ' . $e->getMessage());
         }

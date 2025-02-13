@@ -6,17 +6,36 @@ use App\Repositories\Flag\FlagRepositoryInterface;
 
 class FlagRepository implements FlagRepositoryInterface
 {
-    public function create(array $data)
+    /**
+     * Create a new Flag.
+     *
+     * @param array $data
+     * @return \App\Models\Flag
+     */
+    public function create(array $data): Flag
     {
         return Flag::create($data);
     }
 
-    public function findById($id)
+    /**
+     * Find a Flag by its ID.
+     *
+     * @param int $id
+     * @return \App\Models\Flag|null
+     */
+    public function findById($id): ?Flag
     {
         return Flag::find($id);
     }
 
-    public function update(array $data, int $id)
+    /**
+     * Update the specified Flag.
+     *
+     * @param array $data
+     * @param int $id
+     * @return \App\Models\Flag|null
+     */
+    public function update(array $data, int $id):?Flag
     {
         $economicGroup = Flag::find($id);
         if ($economicGroup) {
@@ -25,7 +44,13 @@ class FlagRepository implements FlagRepositoryInterface
         return $economicGroup;
     }
 
-    public function delete($id)
+    /**
+     * Delete the specified Flag.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete($id):bool
     {
         return Flag::destroy($id);
     }

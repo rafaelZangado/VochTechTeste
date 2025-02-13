@@ -2,30 +2,61 @@
 
 namespace App\Services;
 
-
 use App\Repositories\Unit\UnitRepositoryInterface;
+use Exception;
 
 class UnitService
 {
-    protected $groupRepository;
+    private UnitRepositoryInterface $unitRepository;
 
-    public function __construct(UnitRepositoryInterface $groupRepository)
+    public function __construct(UnitRepositoryInterface $unitRepository)
     {
-        $this->groupRepository = $groupRepository;
+        $this->unitRepository = $unitRepository;
     }
 
-    public function create(array $dados)
+    /**
+     * Create a new unit.
+     *
+     * @param array $data
+     * @return \App\Models\Unit
+     */
+    public function create(array $data)
     {
-        return $this->groupRepository->create($dados);
+        try {
+            return $this->unitRepository->create($data);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao criar unidade: ' . $e->getMessage());
+        }
     }
 
-    public function update(array $dados, int $id)
+    /**
+     * Update the specified unit.
+     *
+     * @param array $data
+     * @param int $id
+     * @return \App\Models\Unit
+     */
+    public function update(array $data, int $id)
     {
-        return  $this->groupRepository->update($dados,  $id);
+        try {
+            return $this->unitRepository->update($data, $id);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao atualizar unidade: ' . $e->getMessage());
+        }
     }
 
-    public function delete(int $id)
+    /**
+     * Delete the specified unit.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
     {
-        return $this->groupRepository->delete( $id);
+        try {
+            return $this->unitRepository->delete($id);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao excluir unidade: ' . $e->getMessage());
+        }
     }
 }

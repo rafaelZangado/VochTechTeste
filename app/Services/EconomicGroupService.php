@@ -2,30 +2,64 @@
 
 namespace App\Services;
 
-
 use App\Repositories\Group\EconomicGroupRepositoryInterface;
+use Exception;
 
 class EconomicGroupService
 {
-    protected $groupRepository;
+    private EconomicGroupRepositoryInterface $groupRepository;
 
     public function __construct(EconomicGroupRepositoryInterface $groupRepository)
     {
         $this->groupRepository = $groupRepository;
     }
 
-    public function create(array $dados)
+    /**
+     * Create a new economic group.
+     *
+     * @param array $data
+     * @return void
+     * @throws Exception
+     */
+    public function create(array $data): void
     {
-        return $this->groupRepository->create($dados);
+        try {
+            $this->groupRepository->create($data);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao criar grupo econômico: ' . $e->getMessage());
+        }
     }
 
-    public function update(array $dados, int $id)
+    /**
+     * Update an existing economic group.
+     *
+     * @param array $data
+     * @param int $id
+     * @return void
+     * @throws Exception
+     */
+    public function update(array $data, int $id): void
     {
-        return  $this->groupRepository->update($dados,  $id);
+        try {
+            $this->groupRepository->update($data, $id);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao atualizar grupo econômico: ' . $e->getMessage());
+        }
     }
 
-    public function delete(int $id)
+    /**
+     * Delete an economic group.
+     *
+     * @param int $id
+     * @return void
+     * @throws Exception
+     */
+    public function delete(int $id): void
     {
-        return $this->groupRepository->delete( $id);
+        try {
+            $this->groupRepository->delete($id);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao excluir grupo econômico: ' . $e->getMessage());
+        }
     }
 }

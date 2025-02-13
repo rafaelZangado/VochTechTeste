@@ -6,31 +6,37 @@ use App\Http\Requests\UnitRequest;
 use App\Models\Flag;
 use App\Models\Unit;
 use App\Services\UnitService;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Exception;
 
 class UnitController extends Controller
 {
-    protected $unitService;
-    protected $unitModel;
-    protected $flagModel;
+    private UnitService $unitService;
+    private Unit $unitModel;
+    private Flag $flagModel;
 
     public function __construct(
         Unit $unitModel,
         Flag $flagModel,
         UnitService $unitService
-    )
-    {
+    ) {
         $this->unitModel = $unitModel;
         $this->flagModel = $flagModel;
         $this->unitService = $unitService;
     }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of the units.
+     *
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
+        $units = $this->unitModel::all();
+
         return view('painel.units.index', [
-            'dados' => $this->unitModel::all(),
+            'dados' => $units,
             'colunas' => [
                 'id',
                 'trade_name',
@@ -39,99 +45,106 @@ class UnitController extends Controller
                 'flag_id',
                 'created_at',
                 'updated_at',
-            ]
+            ],
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new unit.
+     *
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $flags = $this->flagModel::all();
         return view('painel.units.create', compact('flags'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created unit.
+     *
+     * @param UnitRequest $request
+     * @return RedirectResponse
      */
-    public function store(UnitRequest $request)
+    public function store(UnitRequest $request): RedirectResponse
     {
         try {
-            $dados = $request->validated();
-            $this->unitModel->create($dados);
-            return to_route('units.create')
+            $data = $request->validated();
+            $this->unitService->create($data);
+
+            return redirect()->route('units.create')
                 ->with('success', 'Unidade cadastrada com sucesso!');
-        }catch (\Exception $e) {
-            return to_route('units.create')
+        } catch (Exception $e) {
+            return redirect()->route('units.create')
                 ->with('error', 'Erro ao cadastrar: ' . $e->getMessage());
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified unit.
+     *
+     * @param string $id
+     * @return View
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
-        $dados = $this->unitModel->with('flag')->findOrFail($id);
+        $unit = $this->unitModel->with('flag')->findOrFail($id);
         $flags = $this->flagModel::all();
 
-        return view(
-            'painel.units.edit',
-            compact(
-                'dados',
-                'flags'
-            )
-        );
+        return view('painel.units.edit', compact('unit', 'flags'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified unit.
+     *
+     * @param string $id
+     * @return View
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
-        $dados = $this->unitModel->find($id);
+        $unit = $this->unitModel->findOrFail($id);
         $flags = $this->flagModel::all();
-        return view(
-            'painel.units.edit',
-            compact(
-                'dados',
-                'flags'
-            )
-        );
+
+        return view('painel.units.edit', compact('unit', 'flags'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified unit.
+     *
+     * @param UnitRequest $request
+     * @param string $id
+     * @return RedirectResponse
      */
-    public function update(UnitRequest $request, string $id)
+    public function update(UnitRequest $request, string $id): RedirectResponse
     {
         try {
-            $dados = $request->validated();
-            $this->unitService->update($dados, $id);
+            $data = $request->validated();
+            $this->unitService->update($data, $id);
 
-            return to_route('units.show', ['unit' => $id])
+            return redirect()->route('units.show', ['unit' => $id])
                 ->with('success', 'Unidade atualizada com sucesso!');
-
-        } catch (\Exception $e) {
-            return to_route('units.edit', ['unit' => $id])
+        } catch (Exception $e) {
+            return redirect()->route('units.edit', ['unit' => $id])
                 ->with('error', 'Erro ao atualizar a unidade: ' . $e->getMessage());
         }
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified unit.
+     *
+     * @param string $id
+     * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         try {
             $this->unitService->delete($id);
-            return to_route('units.index')
-                ->with('success', 'Unidade excluído com sucesso!');
-        } catch (\Exception $e) {
-            return to_route('units.index')
-                ->with('error', 'Erro ao excluir: ' . $e->getMessage());
+
+            return redirect()->route('units.index')
+                ->with('success', 'Unidade excluída com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('units.index')
+                ->with('error', 'Erro ao excluir a unidade: ' . $e->getMessage());
         }
     }
 }

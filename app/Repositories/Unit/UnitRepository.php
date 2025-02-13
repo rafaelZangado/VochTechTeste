@@ -1,32 +1,64 @@
 <?php
+
 namespace App\Repositories\Unit;
 
 use App\Models\Unit;
 use App\Repositories\Unit\UnitRepositoryInterface;
+use Exception;
 
 class UnitRepository implements UnitRepositoryInterface
 {
-    public function create(array $data)
+    /**
+     * Create a new unit.
+     *
+     * @param array $data
+     * @return \App\Models\Unit
+     */
+    public function create(array $data): Unit
     {
-        return Unit::create($data);
+        try {
+            return Unit::create($data);
+        } catch (Exception $e) {
+            throw new Exception('Erro ao criar unidade: ' . $e->getMessage());
+        }
     }
 
-    public function findById($id)
+    /**
+     * Find a unit by its ID.
+     *
+     * @param int $id
+     * @return \App\Models\Unit|null
+     */
+    public function findById(int $id): ?Unit
     {
         return Unit::find($id);
     }
 
-    public function update(array $data, int $id)
+    /**
+     * Update the specified unit.
+     *
+     * @param array $data
+     * @param int $id
+     * @return \App\Models\Unit|null
+     */
+    public function update(array $data, int $id): ?Unit
     {
-        $economicGroup = Unit::find($id);
-        if ($economicGroup) {
-            $economicGroup->update($data);
+        $unit = Unit::find($id);
+        if ($unit) {
+            $unit->update($data);
         }
-        return $economicGroup;
+
+        return $unit;
     }
 
-    public function delete($id)
+    /**
+     * Delete the specified unit.
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
     {
-        return Unit::destroy($id);
+        return Unit::destroy($id) > 0;
     }
 }
